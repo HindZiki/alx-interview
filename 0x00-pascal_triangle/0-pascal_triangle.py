@@ -1,15 +1,16 @@
 def pascal_triangle(n):
+    """Returns a list of lists representing the Pascal's triangle of n."""
     if n <= 0:
         return []
 
-    triangle = [[1]]  # Première ligne du triangle
+    triangle = [[1]]  # First row of Pascal's triangle
 
     for i in range(1, n):
-        row = [1]  # Chaque ligne commence par 1
+        row = [1]  # Each row starts with 1
         for j in range(1, i):
-            # Chaque élément est la somme des deux éléments situés au-dessus
+            # Each element is the sum of the two elements above it
             row.append(triangle[i-1][j-1] + triangle[i-1][j])
-        row.append(1)  # Chaque ligne se termine par 1
+        row.append(1)  # Each row ends with 1
         triangle.append(row)
 
     return triangle
