@@ -5,13 +5,12 @@ def canUnlockAll(boxes):
     n = len(boxes)
     opened = [False] * n
     opened[0] = True
-    keys = {0}
+    keys = [0]
 
-    while keys:
-        current_key = keys.pop()
-        for key in boxes[current_key]:
-            if key < n and not opened[key]:
-                opened[key] = True
-                keys.add(key)
+    for key in keys:
+        for k in boxes[key]:
+            if k < n and not opened[k]:
+                opened[k] = True
+                keys.append(k)
 
     return all(opened)
