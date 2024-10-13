@@ -1,17 +1,17 @@
 #!/usr/bin/python3
-"""Solves the lock boxes puzzle """
+"""Solves the lock boxes puzzle."""
 
 def canUnlockAll(boxes):
     n = len(boxes)
     opened = [False] * n
     opened[0] = True
-    keys = [0]
+    keys = {0}
 
     while keys:
         current_key = keys.pop()
         for key in boxes[current_key]:
             if key < n and not opened[key]:
                 opened[key] = True
-                keys.append(key)
+                keys.add(key)
 
     return all(opened)
