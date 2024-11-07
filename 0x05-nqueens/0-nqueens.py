@@ -1,55 +1,18 @@
 #!/usr/bin/python3
-"""N queens solution finder module.
-
-Usage: nqueens N:
-    If the user called the program with the wrong number of arguments, print
-        Usage: nqueens N, followed by a new line, and exit with the status 1.
-where N must be an integer greater or equal to 4
-    If N is not an integer, print N must be a number, followed by a new line,
-    and exit with the status 1.
-    If N is smaller than 4, print N must be at least 4, followed by a new
-    line, and exit with the status 1.
-The program should print every possible solution to the problem.
-    One solution per line.
-You are only allowed to import the sys module.
-"""
+"""N queens solution finder module."""
 
 import sys
 
-def is_safe(board, row, col, n):
-    """Check if a queen can be placed at (row, col) without being attacked."""
-    # Check column
-    for i in range(row):
-        if board[i] == col or \
-           board[i] - i == col - row or \
-           board[i] + i == col + row:
-            return False
-    return True
+def print_usage_and_exit():
+    """Prints usage message and exits with status 1."""
+    print("Usage: nqueens N")
+    sys.exit(1)
 
-def solve_nqueens(n):
-    """Find all solutions for the N queens problem and return them."""
-    def backtrack(row):
-        if row == n:
-            solution = [[i, board[i]] for i in range(n)]
-            solutions.append(solution)
-            return
-        for col in range(n):
-            if is_safe(board, row, col, n):
-                board[row] = col
-                backtrack(row + 1)
-                board[row] = -1
-
-    solutions = []
-    board = [-1] * n
-    backtrack(0)
-    return solutions
-
-# Main script
-if __name__ == "__main__":
+def check_arguments():
+    """Checks if the argument is valid and returns it as an integer."""
     if len(sys.argv) != 2:
-        print("Usage: nqueens N")
-        sys.exit(1)
-    
+        print_usage_and_exit()
+
     try:
         n = int(sys.argv[1])
     except ValueError:
@@ -60,6 +23,39 @@ if __name__ == "__main__":
         print("N must be at least 4")
         sys.exit(1)
 
+    return n
+
+def is_safe(board, row, col):
+    """Checks if placing a queen at (row, col) is safe."""
+    for r in range(row):
+        # Check column and diagonals
+        if board[r] == col or \
+           board[r] - r == col - row or \
+           board[r] + r == col + row:
+            return False
+    return True
+
+def solve_nqueens(n):
+    """Finds all solutions to the N queens problem and returns them."""
+    def backtrack(row):
+        if row == n:
+            # Store solution as a list of [row, col] pairs
+            solutions.append([[r, board[r]] for r in range(n)])
+            return
+        for col in range(n):
+            if is_safe(board, row, col):
+                board[row] = col
+                backtrack(row + 1)
+                board[row] = -1
+
+    solutions = []
+    board = [-1] * n
+    backtrack(0)
+    return solutions
+
+# Main execution
+if __name__ == "__main__":
+    n = check_arguments()
     solutions = solve_nqueens(n)
     for solution in solutions:
-        print(solution) 
+        print(solution)
